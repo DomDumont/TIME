@@ -4,4 +4,4 @@ compiler:
   - gcc
   - clang
 
-script: ls & cmake .
+script: rake ci
