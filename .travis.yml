@@ -4,3 +4,4 @@ compiler:
   - gcc
   - clang
 
+script: cmake
