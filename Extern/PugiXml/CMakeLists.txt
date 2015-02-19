@@ -1,7 +1,7 @@
 # Define target name
 set (TARGET_NAME PugiXml)
 
-
+set(_INSTALL_LIBS "PugiXml")
 
 # Define source files
 #Génération de la liste des fichiers sources
@@ -9,19 +9,12 @@ set (TARGET_NAME PugiXml)
 file(
 
         GLOB_RECURSE
-
         source_files
-
         src/*
-
 )
 
-add_library(
 
-        PugiXml
 
-        SHARED
+add_library(PugiXml  STATIC  ${source_files} )
 
-        ${source_files}
 
-)

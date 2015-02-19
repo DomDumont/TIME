@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-add_subdirectory (Engine)
+project (Engine)
 
-foreach (TARGET PugiXml)
-    add_subdirectory (Extern/${TARGET})
-endforeach ()
+include_directories ("../Extern/PugiXml/src")
+add_executable(Engine Main.cpp)
+
+set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS
+
+target_link_libraries (Engine  ${EXTRA_LIBS})

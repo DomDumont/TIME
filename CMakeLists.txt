@@ -9,4 +9,5 @@ set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 include (common)
 
 add_subdirectory (Sources)
+add_subdirectory (Extern)
 
