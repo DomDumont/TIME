@@ -17,4 +17,4 @@ file(
 
 add_library(PugiXml  STATIC  ${source_files} )
 
-
+target_include_directories(PugiXml  PUBLIC "src")
