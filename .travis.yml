@@ -2,6 +2,9 @@ language: cpp
 
 compiler:
   - gcc
-  - clang
-
+env:
+  matrix:
+    - LINUX=1   
+    - WINDOWS=1 
+    
 script: rake ci
