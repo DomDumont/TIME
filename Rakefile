@@ -11,7 +11,7 @@ end
 
 
 def makefile_ci
-
-system "./cmake_generic.sh ../Build"
-system "cd ../Build && make"
+	print "======== Function makefile_ci ==========\n"
+	system "./cmake_generic.sh ../Build"
+	# system "cd ../Build && make"
 end
