@@ -13,5 +13,5 @@ end
 def makefile_ci
 	print "======== Function makefile_ci ==========\n"
 	system "./cmake_generic.sh ../Build"
-	# system "cd ../Build && make"
+	system "cd ../Build && make"
 end
