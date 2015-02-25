@@ -2,9 +2,14 @@ language: cpp
 
 compiler:
   - gcc
+
 env:
   matrix:
     - LINUX=1   
     - WINDOWS=1 
-    
+
+addons:
+  apt_packages:
+    - pandoc
+        
 script: rake ci
