@@ -1,14 +1,28 @@
-#include "pugixml.hpp"
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
 
-#include <iostream>
+#include "pugixml.hpp"
+#include "nativewin.h"
+#include <stdio.h>
+
+void OnNativeWinResize(int width, int height)
+{
+}
+
+void OnNativeWinMouseMove(int mousex, int mousey, bool lbutton)
+{
+}
 
 int main()
 {
-//[code_load_file
-    pugi::xml_document doc;
+  EGLBoolean bsuccess;
 
-    pugi::xml_parse_result result = doc.load_file("tree.xml");
+    // create native window
+    EGLNativeDisplayType nativeDisplay;
+    if(!OpenNativeDisplay(&nativeDisplay))
+    {
+        printf("Could not get open native display\n");
+        return GL_FALSE;
+    }
 
-    std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("mesh").attribute("name").value() << std::endl;
-//]
 }
