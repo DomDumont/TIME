@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project (Engine)
 
-#include_directories ("../Extern/PugiXml/src")
+include_directories ("../Extern/PugiXml/src")
+
 add_executable(Engine Main.cpp)
 
 set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS

@@ -17,7 +17,7 @@ file(
 
 
 
-add_library(PugiXml  STATIC  ${source_files} )
 
-include_directories("src")
-# minimum 2.8.12  :-( target_include_directories(PugiXml  PUBLIC "src")
+add_library(PugiXml  STATIC  ${source_files}  ${header_files} )
+# target_include_directories(PugiXml  PUBLIC "src")
+

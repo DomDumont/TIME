@@ -15,6 +15,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bindom)
 include (common)
 
 add_subdirectory (Sources)
-add_subdirectory (Docs)
+#add_subdirectory (Docs)
 add_subdirectory (Extern)
 
