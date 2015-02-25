@@ -13,8 +13,8 @@ addons:
     - pandoc
 
 before_install:
-  - sudo add-apt-repository --yes ppa:kalakris/cmake
-  - sudo apt-get update -qq
-  - sudo apt-get install cmake
-          
+ # CMake 2.8.12
+  - wget http://www.cmake.org/files/v2.8/cmake-2.8.12.tar.gz -O /tmp/cmake.tar.gz && tar -C /tmp -xvf /tmp/cmake.tar.gz && rm /tmp/cmake.tar.gz
+  - cd /tmp/cmake-2.8.12 && ./bootstrap --prefix=/usr && make -j4 &&  sudo make install -j4 &&  cd - #&& rm -r /tmp/cmake-2.8.12
+
 script: rake ci
