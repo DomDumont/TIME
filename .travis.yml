@@ -12,9 +12,6 @@ env:
     - LINUX=1 TE_64BITS=1 
     - WINDOWS=1 TE_64BITS=1 
 
-addons:
-  apt_packages:
-    - pandoc
 
 
 before_install:
