@@ -6,6 +6,14 @@ macro (check_source_files)
     endif ()
 endmacro ()
 
+ execute_process (COMMAND echo COMMAND ${CMAKE_C_COMPILER} -E -dM - OUTPUT_VARIABLE PREDEFINED_MACROS ERROR_QUIET)
+string (REGEX MATCH "#define +__(x86_64|aarch64)__ +1" matched "${PREDEFINED_MACROS}")
+if (matched)
+set (TE_64BITS TRUE)
+else ()
+set (TE_64BITS FALSE)
+endif ()
+
  if (TE_64BITS)
 	message ("wouesh on passe en 64 bits !!!")
 	set (DASH_MBIT -m64) # This variable is intentionally not defined on Android and RPI platform
