@@ -6,6 +6,11 @@ macro (check_source_files)
     endif ()
 endmacro ()
 
+
+
+set (CMAKE_BUILD_TYPE Release)
+
+
 # execute_process (COMMAND echo COMMAND ${CMAKE_C_COMPILER} -E -dM - OUTPUT_VARIABLE PREDEFINED_MACROS ERROR_QUIET)
 # string (REGEX MATCH "#define +__(x86_64|aarch64)__ +1" matched "${PREDEFINED_MACROS}")
 # if (matched)
