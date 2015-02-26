@@ -14,5 +14,5 @@ end
 def makefile_ci
 	print "======== Function makefile_ci ==========\n"
 	system "./cmake_generic.sh ../Build #{$build_options}"
-	system "cd ../Build && make"
+	system "cd ../Build && make VERBOSE=1" or abort 'Failed to build TIME Engine'
 end
