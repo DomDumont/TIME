@@ -30,7 +30,7 @@ target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/li
 target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libGLESv2.so)
 endif()
 
-find_package(X11)
+find_package(X11 REQUIRED)
 
   if(NOT X11_FOUND)
     message(FATAL_ERROR "Failed to find X11 which is required to build nsu")

@@ -4,6 +4,8 @@ compiler:
   - gcc
 
 env:
+  global:
+    - DISPLAY=:99.0
   matrix:
     - LINUX=1 TE_64BITS=0  
     - WINDOWS=1 TE_64BITS=0 
