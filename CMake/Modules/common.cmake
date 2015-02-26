@@ -8,7 +8,7 @@ endmacro ()
 
 
 
-set (CMAKE_BUILD_TYPE Release)
+set (CMAKE_BUILD_TYPE Debug)
 
 
 # execute_process (COMMAND echo COMMAND ${CMAKE_C_COMPILER} -E -dM - OUTPUT_VARIABLE PREDEFINED_MACROS ERROR_QUIET)
@@ -23,13 +23,15 @@ set (CMAKE_BUILD_TYPE Release)
 	message ("wouesh on passe en 64 bits !!!")
 	set (DASH_MBIT -m64) # This variable is intentionally not defined on Android and RPI platform
 else ()
-	message ("wouesh on passe en 32 bits !!!")
-	set (TE_MBIT -m32)
+	message ("wouesh on passe en 33 bits !!!")
+	set (DASH_MBIT -m32)
 endif ()
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${DASH_MBIT}")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DASH_MBIT}")
-set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${DASH_MBIT}")
-set (CCMAKE_EXE_LINKER_FLAGS "${CCMAKE_EXE_LINKER_FLAGS} ${DASH_MBIT}")
-set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${DASH_MBIT}")
+set (CMAKE_C_FLAGS_DEBUG  "${CMAKE_C_FLAGS_DEBUG} ${DASH_MBIT}")
+message("ici => ${CMAKE_C_FLAGS_DEBUG}")
+set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${DASH_MBIT}")
+message("ici => ${CMAKE_CXX_FLAGS_DEBUG}")
+set (CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${DASH_MBIT}")
+set (CCMAKE_EXE_LINKER_FLAGS_DEBUG "${CCMAKE_EXE_LINKER_FLAGS_DEBUG} ${DASH_MBIT}")
+set (CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} ${DASH_MBIT}")
 
