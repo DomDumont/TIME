@@ -36,5 +36,7 @@ find_package(X11)
     message(FATAL_ERROR "Failed to find X11 which is required to build nsu")
   endif(NOT X11_FOUND)
 
+message("PREFIX PATH ="  "$ENV{CMAKE_PREFIX_PATH}")
+message("X11 Librairies = " "${X11_LIBRARIES}")
 target_link_libraries (Engine  ${X11_LIBRARIES})
 
