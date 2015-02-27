@@ -8,6 +8,13 @@ endmacro ()
 
 
 
+ if (TE_64BITS)
+        set_property (GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
+    else()
+        set_property (GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS FALSE)
+    endif ()
+
+
 set (CMAKE_BUILD_TYPE Debug)
 
 
