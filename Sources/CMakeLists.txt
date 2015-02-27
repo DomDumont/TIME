@@ -23,14 +23,16 @@ set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS
 
 target_link_libraries (Engine  ${EXTRA_LIBS})
 if (TE_64BITS)
-target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libEGL.so)
-target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libGLESv2.so)
+	target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libEGL.so)
+	target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libGLESv2.so)
+	set_property (GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
 else()
-target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libEGL.so)
-target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libGLESv2.so)
+	set_property (GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS FALSE)
+	target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libEGL.so)
+	target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libGLESv2.so)
 endif()
 
-find_package(X11 REQUIRED)
+ find_package(X11 REQUIRED)
 
   if(NOT X11_FOUND)
     message(FATAL_ERROR "Failed to find X11 which is required to build nsu")
@@ -38,5 +40,6 @@ find_package(X11 REQUIRED)
 
 message("PREFIX PATH ="  "$ENV{CMAKE_PREFIX_PATH}")
 message("X11 Librairies = " "${X11_LIBRARIES}")
+message("X11 Libs = " "${X11_LIBS}")
 target_link_libraries (Engine  ${X11_LIBRARIES})
 
