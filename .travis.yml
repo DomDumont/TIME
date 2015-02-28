@@ -15,6 +15,7 @@ env:
 
 
 before_install:
+    - travis_retry sudo add-apt-repository ppa:george-edison55/precise-backports -y
     - travis_retry sudo apt-get update -q -y
 install:
     - travis_retry sudo apt-get install -q -y --no-install-recommends libasound2-dev
