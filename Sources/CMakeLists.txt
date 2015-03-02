@@ -40,7 +40,8 @@ if (LINUX)
         message("X11 Librairies = " "${X11_LIBRARIES}")
         message("X11 Libs = " "${X11_LIBS}")
         target_link_libraries (Engine  ${X11_LIBRARIES})
-
+        set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS
+        target_link_libraries (Engine  ${EXTRA_LIBS})
 endif()
 
 if (WIN32)
@@ -63,6 +64,8 @@ if (WIN32)
         target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86/libGLESv2.lib)
     endif()
 
+    set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS
+    target_link_libraries (Engine  ${EXTRA_LIBS})
 
 endif()
 
@@ -71,9 +74,7 @@ endif()
 
 
 
-set (EXTRA_LIBS ${EXTRA_LIBS} PugiXml) #Add PugiXml to EXTRA_LIBS
 
-target_link_libraries (Engine  ${EXTRA_LIBS})
 
 
 
