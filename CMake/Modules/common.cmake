@@ -26,6 +26,8 @@ set (CMAKE_BUILD_TYPE Debug)
 # set (TE_64BITS FALSE)
 # endif ()
 
+set (TE_64BITS FALSE)
+
  if (TE_64BITS)
 	message ("wouesh on passe en 64 bits !!!")
 	set (DASH_MBIT -m64) # This variable is intentionally not defined on Android and RPI platform
