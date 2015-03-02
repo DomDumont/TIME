@@ -170,17 +170,37 @@ EGLBoolean Setup(esContext &ctx)
 	return GL_TRUE;
 	}
 
+esContext ctx;
+void Render(esContext &ctx)
+	{
+	}
 
 int main()
 {
-  EGLBoolean bsuccess;
+ctx.nWindowWidth = 640;
+ctx.nWindowHeight = 480;
+int lRet = 0;
 
-    // create native window
-    EGLNativeDisplayType nativeDisplay;
-    if(!OpenNativeDisplay(&nativeDisplay))
-    {
-        printf("Could not get open native display\n");
-        return GL_FALSE;
-    }
+// create window and setup egl
+if (Setup(ctx) == GL_FALSE)
+	{
+	return lRet;
+	}
+
+// main loop
+while (UpdateNativeWin(ctx.nativeDisplay, ctx.nativeWin))
+	{
+	// render the model
+	Render(ctx);
+	}
+
+eglMakeCurrent(EGL_NO_DISPLAY, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+eglDestroyContext(ctx.eglDisplay, ctx.eglContext);
+eglDestroySurface(ctx.eglDisplay, ctx.eglSurface);
+eglTerminate(ctx.eglDisplay);
+DestroyNativeWin(ctx.nativeDisplay, ctx.nativeWin);
+CloseNativeDisplay(ctx.nativeDisplay);
+
+return lRet;
 
 }
