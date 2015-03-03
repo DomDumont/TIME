@@ -11,6 +11,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libdom)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libdom)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bindom)
 
+option(FORCE_WINDOWS "ForceWindows" OFF)
+
+if (FORCE_WINDOWS)
+    set(WINDOWS TRUE)
+endif()
+
+
 
 # Include TIME Cmake common module
 include (common)

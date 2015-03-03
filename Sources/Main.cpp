@@ -1,206 +1,194 @@
-#include <EGL/egl.h>
-#include <GLES2/gl2.h>
+//
+// Book:      OpenGL(R) ES 2.0 Programming Guide
+// Authors:   Aaftab Munshi, Dan Ginsburg, Dave Shreiner
+// ISBN-10:   0321502795
+// ISBN-13:   9780321502797
+// Publisher: Addison-Wesley Professional
+// URLs:      http://safari.informit.com/9780321563835
+//            http://www.opengles-book.com
+//
 
-#include "pugixml.hpp"
-#include "nativewin.h"
-#include <stdio.h>
+// Hello_Triangle.c
+//
+//    This is a simple example that draws a single triangle with
+//    a minimal vertex/fragment shader.  The purpose of this 
+//    example is to demonstrate the basic concepts of 
+//    OpenGL ES 2.0 rendering.
+#include <stdlib.h>
+#include "esUtil.h"
 
-void OnNativeWinResize(int width, int height)
-{
-}
-
-void OnNativeWinMouseMove(int mousex, int mousey, bool lbutton)
-{
-}
-
-class RenderState
+typedef struct
 	{
-		public:
-		RenderState() : po(0), vertLoc(0), mvpLoc(0), normalLoc(0), texcoordLoc(0), texUnitLoc(0)
+	// Handle to a program object
+	GLuint programObject;
+
+	} UserData;
+
+///
+// Create a shader object, load the shader source, and
+// compile the shader.
+//
+GLuint LoadShader(GLenum type, const char *shaderSrc)
+	{
+	GLuint shader;
+	GLint compiled;
+
+	// Create the shader object
+	shader = glCreateShader(type);
+
+	if (shader == 0)
+		return 0;
+
+	// Load the shader source
+	glShaderSource(shader, 1, &shaderSrc, NULL);
+
+	// Compile the shader
+	glCompileShader(shader);
+
+	// Check the compile status
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+
+	if (!compiled)
+		{
+		GLint infoLen = 0;
+
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+
+		if (infoLen > 1)
 			{
+			char* infoLog = (char*)malloc(sizeof(char) * infoLen);
+
+			glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
+			esLogMessage("Error compiling shader:\n%s\n", infoLog);
+
+			free(infoLog);
 			}
-		~RenderState() {}
 
-		GLint po;
-		GLint vertLoc;
-		GLint mvpLoc;
-		GLint lightLoc;
-		GLint normalLoc;
-		GLint texcoordLoc;
-		GLint texUnitLoc;
+		glDeleteShader(shader);
+		return 0;
+		}
 
-		GLfloat yaw;
-		GLfloat pitch;
+	return shader;
 
+	}
 
-	};
-
-class esContext
+///
+// Initialize the shader and program object
+//
+int Init(ESContext *esContext)
 	{
-		public:
-		esContext() :
-			nativeDisplay(0), nativeWin(0),
-			eglDisplay(0), eglSurface(0), eglContext(0),
-			nWindowWidth(0), nWindowHeight(0), nMouseX(0), nMouseY(0)
+	UserData *userData = (UserData *) esContext->userData;
+	GLbyte vShaderStr[] =
+		"attribute vec4 vPosition;    \n"
+		"void main()                  \n"
+		"{                            \n"
+		"   gl_Position = vPosition;  \n"
+		"}                            \n";
+
+	GLbyte fShaderStr[] =
+		"precision mediump float;\n"\
+		"void main()                                  \n"
+		"{                                            \n"
+		"  gl_FragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );\n"
+		"}                                            \n";
+
+	GLuint vertexShader;
+	GLuint fragmentShader;
+	GLuint programObject;
+	GLint linked;
+
+	// Load the vertex/fragment shaders
+	vertexShader = LoadShader(GL_VERTEX_SHADER,(const char*) vShaderStr);
+	fragmentShader = LoadShader(GL_FRAGMENT_SHADER, (const char*)fShaderStr);
+
+	// Create the program object
+	programObject = glCreateProgram();
+
+	if (programObject == 0)
+		return 0;
+
+	glAttachShader(programObject, vertexShader);
+	glAttachShader(programObject, fragmentShader);
+
+	// Bind vPosition to attribute 0   
+	glBindAttribLocation(programObject, 0, "vPosition");
+
+	// Link the program
+	glLinkProgram(programObject);
+
+	// Check the link status
+	glGetProgramiv(programObject, GL_LINK_STATUS, &linked);
+
+	if (!linked)
+		{
+		GLint infoLen = 0;
+
+		glGetProgramiv(programObject, GL_INFO_LOG_LENGTH, &infoLen);
+
+		if (infoLen > 1)
 			{
+			char* infoLog = (char*) malloc(sizeof(char) * infoLen);
+
+			glGetProgramInfoLog(programObject, infoLen, NULL, infoLog);
+			esLogMessage("Error linking program:\n%s\n", infoLog);
+
+			free(infoLog);
 			}
 
-		~esContext() {}
-
-		EGLNativeDisplayType nativeDisplay;
-		EGLNativeWindowType nativeWin;
-		EGLDisplay eglDisplay;
-		EGLSurface eglSurface;
-		EGLContext eglContext;
-
-		int         nWindowWidth;
-		int         nWindowHeight;
-		int         nMouseX;
-		int         nMouseY;
-
-		RenderState rs;
-	};
-
-
-EGLBoolean Setup(esContext &ctx)
-	{
-	EGLBoolean bsuccess;
-
-	// create native window
-	EGLNativeDisplayType nativeDisplay;
-	if (!OpenNativeDisplay(&nativeDisplay))
-		{
-		printf("Could not get open native display\n");
-		return GL_FALSE;
+		glDeleteProgram(programObject);
+		return FALSE;
 		}
 
-	// get egl display handle
-	EGLDisplay eglDisplay;
-	eglDisplay = eglGetDisplay(nativeDisplay);
-	if (eglDisplay == EGL_NO_DISPLAY)
-		{
-		printf("Could not get EGL display\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-	ctx.eglDisplay = eglDisplay;
+	// Store the program object
+	userData->programObject = programObject;
 
-	// Initialize the display
-	EGLint major = 0;
-	EGLint minor = 0;
-	bsuccess = eglInitialize(eglDisplay, &major, &minor);
-	if (!bsuccess)
-		{
-		printf("Could not initialize EGL display\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-	if (major < 1 || minor < 4)
-		{
-		// Does not support EGL 1.4
-		printf("System does not support at least EGL 1.4\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	// Obtain the first configuration with a depth buffer
-	EGLint attrs[] = { EGL_DEPTH_SIZE, 16, EGL_NONE };
-	EGLint numConfig = 0;
-	EGLConfig eglConfig = 0;
-	bsuccess = eglChooseConfig(eglDisplay, attrs, &eglConfig, 1, &numConfig);
-	if (!bsuccess)
-		{
-		printf("Could not find valid EGL config\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	// Get the native visual id
-	int nativeVid;
-	if (!eglGetConfigAttrib(eglDisplay, eglConfig, EGL_NATIVE_VISUAL_ID, &nativeVid))
-		{
-		printf("Could not get native visual id\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	EGLNativeWindowType nativeWin;
-	if (!CreateNativeWin(nativeDisplay, 640, 480, nativeVid, &nativeWin))
-		{
-		printf("Could not create window\n");
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	// Create a surface for the main window
-	EGLSurface eglSurface;
-	eglSurface = eglCreateWindowSurface(eglDisplay, eglConfig, nativeWin, NULL);
-	if (eglSurface == EGL_NO_SURFACE)
-		{
-		printf("Could not create EGL surface\n");
-		DestroyNativeWin(nativeDisplay, nativeWin);
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-	ctx.eglSurface = eglSurface;
-
-	// Create an OpenGL ES context
-	EGLContext eglContext;
-	eglContext = eglCreateContext(eglDisplay, eglConfig, EGL_NO_CONTEXT, NULL);
-	if (eglContext == EGL_NO_CONTEXT)
-		{
-		printf("Could not create EGL context\n");
-		DestroyNativeWin(nativeDisplay, nativeWin);
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	// Make the context and surface current
-	bsuccess = eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext);
-	if (!bsuccess)
-		{
-		printf("Could not activate EGL context\n");
-		DestroyNativeWin(nativeDisplay, nativeWin);
-		CloseNativeDisplay(nativeDisplay);
-		return GL_FALSE;
-		}
-
-	ctx.nativeDisplay = nativeDisplay;
-	ctx.nativeWin = nativeWin;
-	return GL_TRUE;
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	return TRUE;
 	}
 
-esContext ctx;
-void Render(esContext &ctx)
+///
+// Draw a triangle using the shader pair created in Init()
+//
+void Draw(ESContext *esContext)
 	{
+	UserData *userData = (UserData *) esContext->userData;
+	GLfloat vVertices[] = { 0.0f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f };
+
+	// Set the viewport
+	glViewport(0, 0, esContext->width, esContext->height);
+
+	// Clear the color buffer
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Use the program object
+	glUseProgram(userData->programObject);
+
+	// Load the vertex data
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vVertices);
+	glEnableVertexAttribArray(0);
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 	}
 
-int main()
-{
-ctx.nWindowWidth = 640;
-ctx.nWindowHeight = 480;
-int lRet = 0;
 
-// create window and setup egl
-if (Setup(ctx) == GL_FALSE)
+int main(int argc, char *argv[])
 	{
-	return lRet;
+	ESContext esContext;
+	UserData  userData;
+
+	esInitContext(&esContext);
+	esContext.userData = &userData;
+
+	esCreateWindow(&esContext, "Hello Triangle", 320, 240, ES_WINDOW_RGB);
+
+	if (!Init(&esContext))
+		return 0;
+
+	esRegisterDrawFunc(&esContext, Draw);
+
+	esMainLoop(&esContext);
 	}
-
-// main loop
-while (UpdateNativeWin(ctx.nativeDisplay, ctx.nativeWin))
-	{
-	// render the model
-	Render(ctx);
-	}
-
-eglMakeCurrent(EGL_NO_DISPLAY, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-eglDestroyContext(ctx.eglDisplay, ctx.eglContext);
-eglDestroySurface(ctx.eglDisplay, ctx.eglSurface);
-eglTerminate(ctx.eglDisplay);
-DestroyNativeWin(ctx.nativeDisplay, ctx.nativeWin);
-CloseNativeDisplay(ctx.nativeDisplay);
-
-return lRet;
-
-}

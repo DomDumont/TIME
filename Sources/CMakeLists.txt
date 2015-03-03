@@ -6,18 +6,17 @@ include_directories ("../Extern/PugiXml/src")
 include_directories ("../Extern/AmdSDK/include")
 include_directories ("./Platform")
 
-
-
-if (LINUX)
     file(
 
             GLOB_RECURSE
             source_files
-            Platform/Linux/*
+            Platform/*
     )
 
     set(source_files ${source_files} Main.cpp)
     add_executable(Engine ${source_files})
+
+if (LINUX)
 
     if (TE_64BITS)
         target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libEGL.so)
@@ -47,15 +46,6 @@ endif()
 if (WIN32)
     set(TE_64BITS FALSE)
     
-    file(
-
-            GLOB_RECURSE
-            source_files
-            Platform/Windows/*
-    )
-    set(source_files ${source_files} Main.cpp)
-    add_executable(Engine ${source_files})
-
     if (TE_64BITS)
         target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libEGL.lib)
         target_link_libraries(Engine ${CMAKE_CURRENT_SOURCE_DIR}/../Extern/AmdSDK/x86-64/libGLESv2.lib)

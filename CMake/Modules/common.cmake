@@ -6,6 +6,17 @@ macro (check_source_files)
     endif ()
 endmacro ()
 
+
+if (LINUX)
+    message("Add TIME_LINUX preprocessor definition")
+    add_definitions(-DTIME_LINUX)
+endif()
+if (WINDOWS)
+    message("Add TIME_WINDOWS preprocessor definition")
+    add_definitions(-DTIME_WINDOWS)
+endif()
+
+
 if (LINUX)
 
      if (TE_64BITS)
