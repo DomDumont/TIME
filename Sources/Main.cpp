@@ -1,4 +1,7 @@
+#include "Platform.h"
 
 int main(int argc, char *argv[])
 	{
+	PlatformInit();
+	PlatformQuit();
 	}

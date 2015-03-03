@@ -3,13 +3,14 @@ project (Engine)
 
 
 include_directories ("./Platform")
+include_directories ("./Utils")
 
 
     file(
 
             GLOB_RECURSE
             source_files
-            Platform/*
+            ./*
     )
 
     set(source_files ${source_files} Main.cpp)
