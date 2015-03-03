@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 project (Engine)
 
 
-include_directories ("../Extern/PugiXml/src")
-include_directories ("../Extern/AmdSDK/include")
 include_directories ("./Platform")
+
 
     file(
 
@@ -16,6 +15,7 @@ include_directories ("./Platform")
     set(source_files ${source_files} Main.cpp)
     add_executable(Engine ${source_files})
 
+#[[
 if (LINUX)
 
     if (TE_64BITS)
@@ -61,6 +61,7 @@ endif()
 
 
 
+]]
 
 
 
