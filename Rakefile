@@ -1,12 +1,13 @@
 desc 'Configure, build, and test TIME project'
 task :ci do
-    if ENV['LINUX'] 
-    print "This is a linux build\n"; $stdout.flush   # Flush the standard output stream in case it is buffered to prevent Travis-CI into thinking that the build/test has stalled
-    end
+  print "ENV LINUX = " + ENV['LINUX'] + "\n";
+  if ENV['LINUX'] 
+    print "This is a linux build\n"; $stdout.flush   # Flush the standard output 
+  end
 
-   $build_options = "-DTE_64BITS=#{ENV['TE_64BITS']}" if ENV['TE_64BITS']
+  $build_options = "-DTE_64BITS=#{ENV['TE_64BITS']}" if ENV['TE_64BITS']
 
-    makefile_ci
+  makefile_ci
 
 end
 

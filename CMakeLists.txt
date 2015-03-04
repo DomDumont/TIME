@@ -12,9 +12,19 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libdom)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bindom)
 
 option(FORCE_WINDOWS "ForceWindows" OFF)
+option(FORCE_LINUX "ForceLinux" OFF)
 
-if (FORCE_WINDOWS)
-    set(WINDOWS TRUE)
+message("env linux =  $ENV{LINUX}")
+message("env windows =  $ENV{WINDOWS}")
+
+if (FORCE_WINDOWS OR "$ENV{WINDOWS}" STREQUAL "1" )
+  message('Windows forced or detected')
+  set(WINDOWS TRUE)
+endif()
+
+if (FORCE_LINUX OR "$ENV{LINUX}" STREQUAL "1" )
+  message('Linux forced or detected')
+  set(LINUX TRUE)
 endif()
 
 

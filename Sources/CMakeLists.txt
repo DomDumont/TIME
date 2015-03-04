@@ -5,16 +5,28 @@ project (Engine)
 include_directories ("./Platform")
 include_directories ("./Utils")
 
+if (LINUX)
+  message("this is linux so we add linux cpp files")
+  set (dependant_sources_path "./Platform/Linux/*.cpp")
+endif()
+
+if (WINDOWS)
+  message('this is windows')
+  set (dependant_sources_path "./Platform/Windows/*.cpp")
+endif()
+
 
     file(
 
             GLOB_RECURSE
-            source_files
-            ./*
+            src_files
+            "${dependant_sources_path}" 
     )
 
-    set(source_files ${source_files} Main.cpp)
-    add_executable(Engine ${source_files})
+  message("src_files = " ${src_files})
+  set(src_files ${src_files} Main.cpp)
+  message("src_files = " ${src_files})
+  add_executable(Engine ${src_files})
 
 
 # if (LINUX)
@@ -59,13 +71,4 @@ include_directories ("./Utils")
 #     target_link_libraries (Engine  ${EXTRA_LIBS})
 
 # endif()
-
-
-
-
-
-
-
-
-
 
