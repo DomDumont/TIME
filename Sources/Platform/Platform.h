@@ -3,6 +3,7 @@
 
 int PlatformInit();
 
+int PlatformCreateWindow();
 int PlatformQuit();
 
 #endif

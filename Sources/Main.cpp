@@ -3,5 +3,6 @@
 int main(int argc, char *argv[])
 	{
 	PlatformInit();
+	PlatformCreateWindow();
 	PlatformQuit();
 	}
