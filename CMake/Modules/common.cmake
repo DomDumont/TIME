@@ -7,6 +7,12 @@ macro (check_source_files)
 endmacro ()
 
 
+if (MINGW AND CMAKE_CROSSCOMPILING)
+    message ("Oh Oh MINGW AND CMAKE_CROSSCOMPILING")
+    set (MINGW_PREFIX "" CACHE STRING "Prefix path to MinGW cross-compiler tools (MinGW cross-compiling build only)")
+    set (MINGW_SYSROOT "" CACHE PATH "Path to MinGW system root (MinGW cross-compiling build only)")
+endif ()
+
 if (LINUX)
     message("Add TIME_LINUX preprocessor definition")
     add_definitions(-DTIME_LINUX)
