@@ -7,6 +7,15 @@ macro (check_source_files)
 endmacro ()
 
 
+if (MINGW)
+    message ("Oh Oh MINGW ONLY")
+endif ()
+
+if (CMAKE_CROSSCOMPILING)
+    message ("Oh Oh CMAKE_CROSSCOMPILING ONLY")
+endif ()
+
+
 if (MINGW AND CMAKE_CROSSCOMPILING)
     message ("Oh Oh MINGW AND CMAKE_CROSSCOMPILING")
     set (MINGW_PREFIX "" CACHE STRING "Prefix path to MinGW cross-compiler tools (MinGW cross-compiling build only)")
