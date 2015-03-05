@@ -5,29 +5,31 @@ project (Engine)
 include_directories ("./Platform")
 include_directories ("./Utils")
 
+
+FILE(GLOB Platform_Windows_CPP "./Platform/Windows/*.cpp")
+FILE(GLOB Platform_Linux_CPP "./Platform/Linux/*.cpp")
+FILE(GLOB Utils_Windows_CPP "./Utils/Windows/*.cpp")
+FILE(GLOB Utils_Linux_CPP "./Utils/Linux/*.cpp")
+FILE(GLOB Common_CPP "./*.cpp")
+
+set (All_CPP ${Common_CPP} )
 if (LINUX)
   message("this is linux so we add linux cpp files")
-  set (dependant_sources_path "./Platform/Linux/*.cpp")
+  set(All_CPP ${All_CPP} ${Platform_Linux_CPP} ${Utils_Linux_CPP})  
 endif()
 
 if (WINDOWS)
-  message('this is windows')
-  set (dependant_sources_path "./Platform/Windows/*.cpp")
+  message("this is windows")
+  set(All_CPP ${All_CPP} ${Platform_Windows_CPP} ${Utils_Windows_CPP})  
 endif()
 
 
-    file(
+  
+add_executable(Engine ${All_CPP})
 
-            GLOB_RECURSE
-            src_files
-            "${dependant_sources_path}" 
-    )
-
-  message("src_files = " ${src_files})
-  set(src_files ${src_files} Main.cpp)
-  message("src_files = " ${src_files})
-  add_executable(Engine ${src_files})
-
+if (WINDOWS)
+  target_link_libraries(Engine opengl32.lib)
+endif()
 
 # if (LINUX)
 

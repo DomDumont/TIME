@@ -1,6 +1,5 @@
 desc 'Configure, build, and test TIME project'
 task :ci do
-  print "ENV LINUX = " + ENV['LINUX'] + "\n";
   if ENV['LINUX'] 
     print "This is a linux build\n"; $stdout.flush   # Flush the standard output 
   end
