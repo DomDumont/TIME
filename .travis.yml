@@ -22,7 +22,7 @@ install:
     - travis_retry sudo apt-get remove -q -y gvfs-daemons 
     - travis_retry sudo apt-get install -q -y  libice-dev:i386 libxrandr-dev:i386 libglapi-mesa:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev:i386 libxext-dev:i386 libxrender-dev:i386 g++-multilib
     - if [ $LINUX ]; then if [ "$TE_64BITS" == "0" ]; then travis_retry sudo apt-get remove -q -y gvfs-daemons && travis_retry sudo apt-get install -q -y libice-dev:i386 libxrandr-dev:i386 libglapi-mesa:i386 libgl1-mesa-glx:i386 libgl1-mesa-dev:i386 libxext-dev:i386 libxrender-dev:i386 g++-multilib && export CMAKE_PREFIX_PATH=/usr/lib/i386-linux-gnu; else bash -e /etc/init.d/xvfb start; fi ; fi
-    - if [ $WINDOWS ]; then if [ "$TE_64BITS" == "0" ]; then travis_retry sudo apt-get install -q -y gcc-mingw-w64-i686 g++-mingw-w64-i686 binutils-mingw-w64-i686 && export ARCH=i686; else travis_retry sudo apt-get install -q -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 binutils-mingw-w64-x86-64 && export ARCH=x86_64; fi && travis_retry sudo apt-get install -q -y g++-multilib && export MINGW_PREFIX=/usr/bin/${ARCH}-w64-mingw32; fi
+    - if [ $WINDOWS ]; then if [ "$TE_64BITS" == "0" ]; then travis_retry sudo apt-get install -q -y gcc-mingw-w64-i686 g++-mingw-w64-i686 binutils-mingw-w64-i686 mingw-w64-i686-dev && export ARCH=i686; else travis_retry sudo apt-get install -q -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 binutils-mingw-w64-x86-64 mingw-w64-x86-64-dev && export ARCH=x86_64; fi && travis_retry sudo apt-get install -q -y g++-multilib && export MINGW_PREFIX=/usr/bin/${ARCH}-w64-mingw32; fi
     - travis_retry sudo apt-get autoremove
     - export CMAKE_PREFIX_PATH=/usr/lib/i386-linux-gnu
     
