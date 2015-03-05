@@ -13,6 +13,11 @@ SOURCE=$(dirname $0)
 if [ "$SOURCE" == "." ]; then SOURCE=$(pwd); fi
 if [ "$BUILD" == "." ]; then BUILD=$(pwd); fi
 
+
+# Detect CMake toolchains directory if it is not provided explicitly
+[ "$TOOLCHAINS" == "" ] && TOOLCHAINS=$SOURCE/CMake/Toolchains
+
+echo $TOOLCHAINS
 echo $BUILD
 
 IFS=#
