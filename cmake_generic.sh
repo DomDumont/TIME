@@ -30,6 +30,9 @@ for a in $@; do
     esac
 done
 
+echo "OPTS"
+echo $OPTS
+
 # Create project with the chosen CMake generator and toolchain
 cmake -E make_directory "$BUILD" && cmake -E chdir "$BUILD" cmake $OPTS $@ "$SOURCE" 
 unset IFS

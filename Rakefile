@@ -5,9 +5,13 @@ task :ci do
   end
 
   $build_options = "-DWIN32=#{ENV['WINDOWS']}" if ENV['WINDOWS']
-  $build_options = "-DTE_64BITS=#{ENV['TE_64BITS']}" if ENV['TE_64BITS']
+  $build_options = "#{$build_options} -DTE_64BITS=#{ENV['TE_64BITS']}" if ENV['TE_64BITS']
+
+  print "Build Options "
+  print $build_options
 
   makefile_ci
+
 
 end
 
