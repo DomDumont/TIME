@@ -15,7 +15,21 @@ if [ "$BUILD" == "." ]; then BUILD=$(pwd); fi
 
 echo $BUILD
 
+IFS=#
+OPTS=
+for a in $@; do
+    case $a in
+        -DWIN32=1)
+            WINDOWS=1 && OPTS="-DCMAKE_TOOLCHAIN_FILE=$TOOLCHAINS/mingw.toolchain.cmake"
+            ;;
+    esac
+done
 
 # Create project with the chosen CMake generator and toolchain
 cmake -E make_directory "$BUILD" && cmake -E chdir "$BUILD" cmake $OPTS $@ "$SOURCE" 
+unset IFS
+
+
+
+
 
