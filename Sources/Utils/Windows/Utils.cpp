@@ -1,6 +1,6 @@
 #include "Utils.h"
 #include <iostream>
-#include <Windows.h>
+#include <windows.h>
 
 void UTI_Log(const std::string& _toto)
 {
