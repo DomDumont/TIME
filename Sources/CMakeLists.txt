@@ -29,7 +29,17 @@ add_executable(Engine ${All_CPP})
 
 if (WINDOWS)
   target_link_libraries(Engine opengl32.lib)
+  if(MSVC) # Check if we are using the Visual Studio compiler
+    set_target_properties(Engine PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+    set_target_properties(Engine PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:WINDOWS")
+  endif()
+
 endif()
+
+
+SET(CPACK_GENERATOR "ZIP")
+INSTALL(TARGETS Engine DESTINATION rototo) 
+INCLUDE(CPack)
 
 # if (LINUX)
 

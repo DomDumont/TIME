@@ -4,7 +4,8 @@
 #include <windows.h>
 
 char *className = "OpenGL";
-char *windowName = "OpenGL Cube";
+
+std::string windowName;
 int winX = 0, winY = 0;
 int winWidth = 300, winHeight = 300;
 
@@ -12,18 +13,38 @@ HDC hDC;
 HGLRC hGLRC;
 HPALETTE hPalette;
 
+extern int main(int argc, char *argv[]);
+
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
+  {
+  main(0, 0);
+  }
+
+
+//-----------------------------------------------------------------------------
+// Initialize the platform
+
 int PlatformInit()
 {
-UTI_Log("Platform Init\n");
-return 0;
+  UTI_Log("Platform Init\n");
+  return 0;
 }
+
+//-----------------------------------------------------------------------------
+// Quit the platform
 
 int PlatformQuit()
 {
-UTI_Log("Platform Quit\n");
-return 0;
+  UTI_Log("Platform Quit\n");
+  return 0;
 }
 
+
+int PlatformPollEvent(Event * event)
+  {
+
+  return 0;
+  }
 
 void
 setupPixelFormat(HDC hDC)
@@ -211,12 +232,21 @@ LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 
+void PlatformDelay(int ms)
+  {
+  Sleep(ms);
+  }
+//-----------------------------------------------------------------------------
+// Create the main window
 
-int PlatformCreateWindow()
+int PlatformCreateWindow(int sizeX, int sizeY, std::string title)
 {
     WNDCLASS wndClass;
     HWND hWnd;
-    MSG msg;
+
+    winWidth = sizeX;
+    winHeight = sizeY;
+    windowName = title;
 
     /* register window class */
     wndClass.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
@@ -233,7 +263,7 @@ int PlatformCreateWindow()
 
     /* create window */
     hWnd = CreateWindow(
-        className, windowName,
+        className, windowName.c_str(),
         WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
         winX, winY, winWidth, winHeight,
 	NULL, NULL, GetModuleHandle(NULL), NULL);
