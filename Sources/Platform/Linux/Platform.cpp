@@ -2,16 +2,18 @@
 
 int PlatformInit()
 {
-  return 0;
 }
 
-int PlatformCreateWindow()
+int PlatformCreateWindow(int sizeX,int sizeY, std::string title)
 {
-  return 0;
 }
 
 int PlatformQuit()
 {
-  return 0;
 }
-
+void PlatformDelay(int ms)
+{
+}
+int PlatformPollEvent(Event * event)
+{
+}
